@@ -77,6 +77,7 @@ startBtnEl.addEventListener("click", function () {
 
 function removeClass() {
   containerSquareEl.innerHTML = "";
+  resultGame.innerHTML = "";
 
   containerSquareEl.classList.remove(
     "container-square-f",
