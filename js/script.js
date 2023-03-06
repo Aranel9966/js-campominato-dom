@@ -33,6 +33,8 @@ let difficultyEL = document.getElementById('difficulty');
 let startBtnEl = document.getElementById('start-btn');
 let containerSquareEl = document.getElementById('container-square');
 let newRandom=[];
+let newClick=[];
+let caselle
 
 
 
@@ -128,8 +130,14 @@ function randomNumber(max,number){
 
         }
         console.log(newRandom);
+
+        caselle = max - number
+        
+        console.log(caselle)
+
     
     return newRandom
+    
     
 }
 
@@ -144,21 +152,71 @@ function createSquareAndColor(container,i){
     
     newSquare.textContent=i
 
+    click = false;
+
     // evento che assegna le classi 
+
+    // let bomb = document.getElementById(newRandom[j]);
+
     newSquare.addEventListener('click',function(){
-   
-        if(newRandom.includes(i)){
     
-            newSquare.classList.add('red')
-    
-        }else{
-    
-            newSquare.classList.add('green')
+        if (!click ){
+        
+            // const elements = parseInt(newSquare[i]);
+        
+            if(newRandom.includes(i)){
             
+                newSquare.classList.add('red')
+                
+                alert('BOOM')
+                
+                for(let j = 0 ; j < newRandom.length ; j++){
+                    let bombs = document.querySelector(`.square:nth-child(${newRandom[j]})`);
+                    bombs.classList.add('red');
+                    
+                }
+                
+                alert('Hai perso');
+            
+                click = true ; 
+               
+            }else{
+            
+                newSquare.classList.add('green')
+            
+                newClick.push(i)
+            
+                console.log(newClick)
+
+
+                for(let add = 0; add < i; add++){
+
+                    if(newClick[add]==newClick){
+    
+                        nuovo=false
+                    }
+                }
+    
+                if(nuovo){
+    
+                    newClick[i]=newClick
+    
+                }else{
+    
+                    
+    
+                }
+            }
         }
         
-        console.log(i)
-    
+        if(caselle === newClick.length){
+
+           alert('vinto')
+   
+        }
+            
     } )
     
+        
 }
+
