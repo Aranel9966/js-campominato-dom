@@ -29,194 +29,135 @@ Aggiungere una select accanto al bottone di generazione, che fornisca una scelta
 
 */
 
-let difficultyEL = document.getElementById('difficulty');
-let startBtnEl = document.getElementById('start-btn');
-let containerSquareEl = document.getElementById('container-square');
-let newRandom=[];
-let newClick=[];
-let caselle
+let difficultyEL = document.getElementById("difficulty");
+let startBtnEl = document.getElementById("start-btn");
+let containerSquareEl = document.getElementById("container-square");
+let resultGame = document.getElementById("result");
+let newRandom = [];
+let newClick = [];
+let caselle;
 
 
+startBtnEl.addEventListener("click", function () {
+  removeClass();
+  if (difficultyEL.value == 1) {
+    randomNumber(100, 16);
 
-
-startBtnEl.addEventListener('click',function(){
-    
-    removeClass();
-
-    if(difficultyEL.value == 1){
-        
-        
-        randomNumber(100,16)
-
-        for(let i = 1; i <= 100;i++){
-            
-            createSquareAndColor(containerSquareEl,i);
-
-            containerSquareEl.classList.add('container-square-f');
-            
-            
-        }
-        
-
-    }else if(difficultyEL.value == 2){
-
-        randomNumber(81,16)
-
-        for(let i = 1; i <= 81;i++){
-            
-            createSquareAndColor(containerSquareEl,i)
-
-            containerSquareEl.classList.add('container-square-n')
-
-        }
-
-    }else{
-
-        randomNumber(49,16)
-
-        for(let i = 1; i <= 49 ;i++){
-            
-            createSquareAndColor(containerSquareEl,i)
-
-            containerSquareEl.classList.add('container-square-d')
-            
-        }
-
+    for (let i = 1; i <= 100; i++) {
+      createSquareAndColor(containerSquareEl, i);
+      
+      containerSquareEl.classList.add("container-square-f");
+     
+      
     }
+  } else if (difficultyEL.value == 2) {
+    randomNumber(81, 16);
 
-    
-})
+    for (let i = 1; i <= 81; i++) {
+      createSquareAndColor(containerSquareEl, i);
+      
+      containerSquareEl.classList.add("container-square-n");
+      
+     
+    }
+  } else {
+    randomNumber(49, 16);
 
+    for (let i = 1; i <= 49; i++) {
+        createSquareAndColor(containerSquareEl, i);
+        
+      containerSquareEl.classList.add("container-square-d");
+      
+    }
+  }
 
+});
 
 //////////function/////////
 
-function removeClass(){
-    
-    containerSquareEl.innerHTML='';
+function removeClass() {
+  containerSquareEl.innerHTML = "";
 
-    containerSquareEl.classList.remove('container-square-f','container-square-n','container-square-d')
-    
+  containerSquareEl.classList.remove(
+    "container-square-f",
+    "container-square-n",
+    "container-square-d"
+  );
 }
 
 // numeri random tutti diversi
-function randomNumber(max,number){
+function randomNumber(max, number) {
+  newRandom = [];
 
-    newRandom=[];
+  for (let i = 0; i < number; i++) {
+    let random = Math.floor(Math.random() * (max - 1 + 1) + 1);
 
-        for(let i = 0; i < number; i++){
+    let nuovo = true;
 
-            let random = Math.floor(Math.random() * (max - 1 + 1) + 1);
+    for (let add = 0; add < i; add++) {
+      if (newRandom[add] == random) {
+        nuovo = false;
+      }
+    }
 
-            let nuovo = true;
+    if (nuovo) {
+      newRandom[i] = random;
+    } else {
+      i--;
+    }
+  }
+  console.log(newRandom);
 
-            for(let add = 0; add < i; add++){
+  caselle = max - number;
 
-                if(newRandom[add]==random){
+  console.log(caselle);
 
-                    nuovo=false
-                }
-            }
-
-            if(nuovo){
-
-                newRandom[i]=random
-
-            }else{
-
-                i--
-
-            }
-
-        }
-        console.log(newRandom);
-
-        caselle = max - number
-        
-        console.log(caselle)
-
-    
-    return newRandom
-    
-    
+  return newRandom;
 }
 
 //function che crea i quadrati e assegna classColor
-function createSquareAndColor(container,i){
+function createSquareAndColor(container, i) {
+  let newSquare = document.createElement("div");
 
-    let newSquare = document.createElement('div')
+  newSquare.classList.add("square");
+  newSquare.setAttribute("id" , i);
+  container.append(newSquare);
 
-    newSquare.classList.add('square')
+  newSquare.textContent = i;
 
-    container.append(newSquare)
-    
-    newSquare.textContent=i
+  click = false;
 
-    click = false;
+  // evento che assegna le classi
 
-    // evento che assegna le classi 
+  // let bomb = document.getElementById(newRandom[j]);
 
-    // let bomb = document.getElementById(newRandom[j]);
+  newSquare.addEventListener("click", function () {
+    if (click === false ) {
+      // const elements = parseInt(newSquare[i]);
 
-    newSquare.addEventListener('click',function(){
-    
-        if (!click ){
-        
-            // const elements = parseInt(newSquare[i]);
-        
-            if(newRandom.includes(i)){
-            
-                newSquare.classList.add('red')
-                
-                alert('BOOM')
-                
-                for(let j = 0 ; j < newRandom.length ; j++){
-                    let bombs = document.querySelector(`.square:nth-child(${newRandom[j]})`);
-                    bombs.classList.add('red');
-                    
-                }
-                
-                alert('Hai perso');
-            
-                click = true ; 
-               
-            }else{
-            
-                newSquare.classList.add('green')
-            
-                newClick.push(i)
-            
-                console.log(newClick)
-
-
-                for(let add = 0; add < i; add++){
-
-                    if(newClick[add]==newClick){
-    
-                        nuovo=false
-                    }
-                }
-    
-                if(nuovo){
-    
-                    newClick[i]=newClick
-    
-                }else{
-    
-                    
-    
-                }
-            }
+      if (newRandom.includes(i)) {
+        for (let j = 0; j < newRandom.length; j++) {
+          let bombs = document.getElementById( newRandom[j]);
+          bombs.classList.add("red");
         }
-        
-        if(caselle === newClick.length){
+        resultGame.innerHTML = "Hai perso";
 
-           alert('vinto')
-   
+        click = true;
+      } else {
+        newSquare.classList.add("green");
+
+        if (!newClick.includes(i)){
+            newClick.push(i);
         }
-            
-    } )
-    
-        
+ 
+
+        console.log(newClick);
+
+      }
+    }
+
+    if (caselle === newClick.length) {
+       resultGame.innerHTML = "Hai Vinto";
+    }
+  });
 }
-
