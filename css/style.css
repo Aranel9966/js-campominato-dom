@@ -37,15 +37,6 @@ main{
 }
 
 
-#container-square{
-    
-    /* margin-top: 100px; */
-    /* display: grid;
-    grid-template-columns: 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px;
-    grid-template-rows:  40px 40px 40px 40px 40px 40px 40px 40px 40px 40px;
-    justify-content: center */
-}
-
 
 .container-square-f{
     display: grid;
@@ -90,6 +81,7 @@ footer{
     padding: 20px;
 }
 #result{
+    margin: 10px;
     text-align: center;
     background-color: red;
     color: white;

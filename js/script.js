@@ -3,7 +3,7 @@ Consegna
 L'utente clicca su un bottone che genererà una griglia di gioco quadrata.
 Ogni cella ha un numero progressivo, da 1 a 100.
 Ci saranno quindi 10 caselle per ognuna delle 10 righe.
-Quando l'utente clicca su ogni cella, la cella cliccata si colora di azzurro ed emetto un messaggio in console con il numero della cella cliccata.
+// Quando l'utente clicca su ogni cella, la cella cliccata si colora di azzurro ed emetto un messaggio in console con il numero della cella cliccata.
 Bonus
 Aggiungere una select accanto al bottone di generazione, che fornisca una scelta tra tre diversi livelli di difficoltà:
 - con difficoltà 1 => 100 caselle, con un numero compreso tra 1 e 100, divise in 10 caselle per 10 righe;
@@ -36,20 +36,24 @@ let resultGame = document.getElementById("result");
 let newRandom = [];
 let newClick = [];
 let caselle;
+let totalPointEl=0;
+
+
 
 
 startBtnEl.addEventListener("click", function () {
   removeClass();
   if (difficultyEL.value == 1) {
     randomNumber(100, 16);
-
+    
     for (let i = 1; i <= 100; i++) {
       createSquareAndColor(containerSquareEl, i);
-      
+
       containerSquareEl.classList.add("container-square-f");
      
       
     }
+    
   } else if (difficultyEL.value == 2) {
     randomNumber(81, 16);
 
@@ -78,6 +82,7 @@ startBtnEl.addEventListener("click", function () {
 function removeClass() {
   containerSquareEl.innerHTML = "";
   resultGame.innerHTML = "";
+  totalPointEl=0;
 
   containerSquareEl.classList.remove(
     "container-square-f",
@@ -107,11 +112,11 @@ function randomNumber(max, number) {
       i--;
     }
   }
-  console.log(newRandom);
+//   console.log(newRandom);
 
   caselle = max - number;
 
-  console.log(caselle);
+//   console.log(caselle);
 
   return newRandom;
 }
@@ -126,39 +131,44 @@ function createSquareAndColor(container, i) {
 
   newSquare.textContent = i;
 
-  click = false;
+  addColor(newSquare,i)
+  
+}
 
-  // evento che assegna le classi
+// evento che assegna le classi
+function addColor(newSquare,i) {
+    click = false;
 
-  // let bomb = document.getElementById(newRandom[j]);
+    newSquare.addEventListener("click", function () {
+      if (click === false ) {
+        
 
-  newSquare.addEventListener("click", function () {
-    if (click === false ) {
-      // const elements = parseInt(newSquare[i]);
+        if (newRandom.includes(i)) {
+          for (let j = 0; j < newRandom.length; j++) {
+            let bombs = document.getElementById( newRandom[j]);
+            bombs.classList.add("red");
+          }
+          resultGame.innerHTML = "Hai perso  <br>  punteggio:" + totalPointEl;
 
-      if (newRandom.includes(i)) {
-        for (let j = 0; j < newRandom.length; j++) {
-          let bombs = document.getElementById( newRandom[j]);
-          bombs.classList.add("red");
+          click = true;
+        } else {
+          newSquare.classList.add("green");
+
+          if (!newClick.includes(i)){
+              newClick.push(i);
+              totalPointEl++
+          }
+
+        //   console.log(totalPointEl)
+
+        //   console.log(newClick);
+
         }
-        resultGame.innerHTML = "Hai perso";
-
-        click = true;
-      } else {
-        newSquare.classList.add("green");
-
-        if (!newClick.includes(i)){
-            newClick.push(i);
-        }
- 
-
-        console.log(newClick);
-
       }
-    }
 
-    if (caselle === newClick.length) {
-       resultGame.innerHTML = "Hai Vinto";
-    }
-  });
+      if (caselle === newClick.length) {
+         resultGame.innerHTML = "Hai Vinto <br>  punteggio:" + totalPointEl;
+      }
+    });
+
 }
